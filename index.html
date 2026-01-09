@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delhi Ward-Based Pollution Dashboard | Civic Technology Platform</title>
+  <meta name="description" content="Comprehensive ward-level pollution monitoring and civic engagement platform for Delhi's 250 wards">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="logo">
+      Delhi<span>Ward</span>
+      <small class="logo-subtitle">Pollution Dashboard</small>
+    </div>
+    
+    <div class="search">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        id="wardSearch" 
+        placeholder="Search by ward name, code, or zone..."
+        autocomplete="off"
+      >
+      <div id="searchResults" class="search-results"></div>
+    </div>
+    
+    <div class="nav-right">
+      <div class="nav-stats">
+        <div class="nav-stat">
+          <span class="stat-value" id="navAvgAQI">--</span>
+          <span class="stat-label">Avg AQI</span>
+        </div>
+        <div class="nav-stat">
+          <span class="stat-value" id="navActiveAlerts">0</span>
+          <span class="stat-label">Alerts</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="showAboutModal()">About Project</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="breadcrumb">
+      Dashboard › Delhi › <span id="currentWardBreadcrumb">All Wards</span>
+    </div>
+
+    <div class="page-header">
+      <div>
+        <h1>Ward-Based Pollution Monitoring System</h1>
+        <p class="page-subtitle">
+          Real-time environmental data and civic accountability for all 250 Delhi wards
+        </p>
+      </div>
+      <div class="live-indicator">
+        <span class="dot"></span>
+        <span>LIVE DATA</span>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="overview" role="tab">📊 Overview</button>
+      <button class="tab" data-tab="map" role="tab">🗺️ Ward Map</button>
+      <button class="tab" data-tab="civic" role="tab">🏛️ Governance</button>
+      <button class="tab" data-tab="feedback" role="tab">📢 Citizen Feedback</button>
+      <button class="tab" data-tab="alerts" role="tab">🚨 Alerts</button>
+      <button class="tab" data-tab="leaderboard" role="tab">🏆 Leaderboard</button>
+    </div>
+
+    <div class="tab-content">
+      <div id="overviewTab" class="tab-panel active">
+        <div class="dashboard-grid">
+          <div class="metrics-overview">
+            <h3>Delhi-wide Pollution Metrics</h3>
+            <div class="metrics-grid" id="overviewMetrics"></div>
+          </div>
+          <div class="quick-actions-panel">
+            <h3>Quick Actions</h3>
+            <button class="action-card" onclick="showTab('map')">
+              <span class="action-icon">🗺️</span>
+              <span class="action-text">Explore Ward Map</span>
+            </button>
+            <button class="action-card" onclick="showTab('feedback')">
+              <span class="action-icon">📝</span>
+              <span class="action-text">Report Issue</span>
+            </button>
+            <button class="action-card" onclick="showTab('leaderboard')">
+              <span class="action-icon">🏆</span>
+              <span class="action-text">View Rankings</span>
+            </button>
+          </div>
+          <div class="mini-alerts" id="miniAlerts"></div>
+        </div>
+      </div>
+
+      <div id="mapTab" class="tab-panel">
+        <div class="map-layout">
+          <div class="map-main">
+            <div id="wardMapContainer"></div>
+          </div>
+          <div class="map-sidebar" id="mapSidebar">
+            <div class="ward-details-panel" id="wardDetailsPanel">
+              <div class="empty-state">
+                <div class="empty-icon">🗺️</div>
+                <h3>Select a Ward</h3>
+                <p>Click on any ward in the map to view comprehensive pollution data</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="civicTab" class="tab-panel">
+        <div id="civicAccountabilityPanel"></div>
+      </div>
+
+      <div id="feedbackTab" class="tab-panel">
+        <div id="citizenFeedbackPanel"></div>
+      </div>
+
+      <div id="alertsTab" class="tab-panel">
+        <div id="alertsInsightsPanel"></div>
+      </div>
+
+      <div id="leaderboardTab" class="tab-panel">
+        <div id="gamificationPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>About This Project</h4>
+        <p>Ward-based pollution monitoring and civic engagement platform for Delhi</p>
+      </div>
+      <div class="footer-section">
+        <h4>Data Sources</h4>
+        <p>Hybrid model using real-time APIs and simulated ward-level data</p>
+      </div>
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p>civic-tech@delhi.gov.in</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Delhi Ward Pollution Dashboard | Built for civic impact</p>
+    </div>
+  </footer>
+
+  <div id="aboutModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeAboutModal()">&times;</span>
+      <h2>About Delhi Ward Pollution Dashboard</h2>
+      <div class="modal-body">
+        <p><strong>Mission:</strong> Empowering citizens and local governance through granular, ward-level environmental monitoring.</p>
+        <h3>Key Features:</h3>
+        <ul>
+          <li>✅ 250 ward-level pollution tracking (Air, Water, Soil, Noise, Waste)</li>
+          <li>✅ Interactive ward map with real-time updates</li>
+          <li>✅ Civic accountability layer with elected representative info</li>
+          <li>✅ Citizen feedback and complaint system</li>
+          <li>✅ Predictive insights and alerts</li>
+          <li>✅ Gamification with ward rankings and achievements</li>
+        </ul>
+        <h3>Technology Stack:</h3>
+        <p>Pure HTML/CSS/JavaScript | Modular Architecture | Scalable Data Layer</p>
+        <h3>Use Cases:</h3>
+        <ul>
+          <li>Citizens reporting local pollution issues</li>
+          <li>Ward councillors tracking environmental performance</li>
+          <li>Policy makers identifying priority areas</li>
+          <li>Researchers analyzing ward-level trends</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="data/wardData.js"></script>
+  <script src="components/wardMap.js"></script>
+  <script src="components/civicAccountability.js"></script>
+  <script src="components/citizenFeedback.js"></script>
+  <script src="components/alertsInsights.js"></script>
+  <script src="components/gamification.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
